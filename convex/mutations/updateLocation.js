@@ -47,6 +47,19 @@ export const updateLocation = mutation({
                 color: args.color,
             });
         }
+
+        // Save to history log
+        await ctx.db.insert("location_history", {
+            userId: args.userId,
+            userName: args.userName,
+            latitude: args.latitude,
+            longitude: args.longitude,
+            accuracy: args.accuracy,
+            speed: args.speed,
+            heading: args.heading,
+            timestamp: Date.now(),
+            color: args.color,
+        });
     },
 });
 
@@ -69,18 +82,4 @@ export const setInactive = mutation({
     },
 });
 
-export const removeLocation = mutation({
-    args: {
-        userId: v.string(),
-    },
-    handler: async (ctx, args) => {
-        const existing = await ctx.db
-            .query("locations")
-            .withIndex("by_userId", (q) => q.eq("userId", args.userId))
-            .first();
 
-        if (existing) {
-            await ctx.db.delete(existing._id);
-        }
-    },
-});

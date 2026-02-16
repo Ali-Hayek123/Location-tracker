@@ -59,7 +59,7 @@ function LocationTracker() {
   const [showSidebar, setShowSidebar] = useState(true);
   const [isSetup, setIsSetup] = useState(false);
   const [gpsStatus, setGpsStatus] = useState("idle"); // idle, requesting, active, error
-  const [updateCount, setUpdateCount] = useState(0);
+
 
   const watchIdRef = useRef(null);
   const intervalRef = useRef(null);
@@ -108,7 +108,6 @@ function LocationTracker() {
 
       try {
         await updateLocation(locationData);
-        setUpdateCount((c) => c + 1);
         setGpsStatus("active");
       } catch (err) {
         console.error("Error sending location:", err);
@@ -388,10 +387,6 @@ function LocationTracker() {
                   <div className="coord-row">
                     <span className="coord-label">Lng</span>
                     <span className="coord-value">{myLocation.longitude.toFixed(6)}</span>
-                  </div>
-                  <div className="coord-row">
-                    <span className="coord-label">Updates</span>
-                    <span className="coord-value">{updateCount}</span>
                   </div>
                 </div>
               )}
